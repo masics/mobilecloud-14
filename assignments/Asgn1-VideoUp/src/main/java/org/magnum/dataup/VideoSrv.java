@@ -1,7 +1,9 @@
 package org.magnum.dataup;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +11,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.magnum.dataup.model.Video;
 import org.magnum.dataup.model.VideoStatus;
@@ -65,20 +66,21 @@ public class VideoSrv {
 		return new ResponseEntity<VideoStatus>(new VideoStatus(
 				VideoStatus.VideoState.READY), HttpStatus.OK);
 	}
-/*
+
 	@RequestMapping(value = VideoSvcApi.VIDEO_DATA_PATH, method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<OutputStream> getData(
-			@PathVariable(VideoSvcApi.ID_PARAMETER) long id) throws IOException {
+	public ResponseEntity<byte[]> getData(
+			@PathVariable(VideoSvcApi.ID_PARAMETER) long id
+			) throws IOException {
 		Video v = videos.get(id);
 		if (v == null || !fileManager.hasVideoData(v)) {
-			return new ResponseEntity<OutputStream>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 		}
-		OutputStream os = new ByteArrayOutputStream();
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		fileManager.copyVideoData(v, os);
-		return new ResponseEntity<OutputStream>(os, HttpStatus.OK);
+		return new ResponseEntity<byte[]>(os.toByteArray(), HttpStatus.OK);
 	}
-*/
+
 	
 /*	@RequestMapping(value = VideoSvcApi.VIDEO_DATA_PATH, method = RequestMethod.GET)
 	public void getData(
@@ -94,7 +96,7 @@ public class VideoSrv {
 		return;
 	}
 */	
-	
+/*	
 	@RequestMapping(value = VideoSvcApi.VIDEO_DATA_PATH, method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<String> getData(
@@ -102,13 +104,13 @@ public class VideoSrv {
 			HttpServletResponse response) throws IOException {
 		final Video v = videos.get(id);
 		if (v == null || !fileManager.hasVideoData(v)) {
-			response.sendError(404);
+			//response.sendError(404);
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
 		fileManager.copyVideoData(v, response.getOutputStream());
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
-
+*/
 	private String getDataUrl(long videoId) {
 		String url = getUrlBaseForLocalServer() + "/video/" + videoId + "/data";
 		return url;
