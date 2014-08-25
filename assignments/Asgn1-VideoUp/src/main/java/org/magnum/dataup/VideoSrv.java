@@ -3,7 +3,6 @@ package org.magnum.dataup;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +73,8 @@ public class VideoSrv {
 			) throws IOException {
 		Video v = videos.get(id);
 		if (v == null || !fileManager.hasVideoData(v)) {
-			return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+			throw new VideoDataNotFoundException();
+			//return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
 		}
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		fileManager.copyVideoData(v, os);
